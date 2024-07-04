@@ -1,0 +1,77 @@
+// Utility method to get index of character 
+// ch in lower alphabet characters
+function getIdx(ch)
+{
+    return (ch - 'a');
+}
+
+// Returns true if all non-zero elements
+// values are same
+function allSame(freq, N)
+{
+    let same = 0;
+
+    // Get first non-zero element
+    let i;
+    for(i = 0; i < N; i++)
+    {
+        if (freq[i] > 0)
+        {
+            same = freq[i];
+            break;
+        }
+    }
+
+    // Check equality of each element with
+    // variable same
+    for(let j = i + 1; j < N; j++)
+        if (freq[j] > 0 && freq[j] != same)
+            return false;
+
+    return true;
+}
+
+// Returns true if we can make all character
+// frequencies same
+function possibleSameCharFreqByOneRemoval(str)
+{
+    let l = str.length;
+
+    // Fill frequency array
+    let freq = new Array(26).fill(0);
+
+    for(let i = 0; i < l; i++)
+        freq[getIdx(str[i])]++;
+
+    // If all frequencies are same, 
+    // then return true
+    if (allSame(freq, 26))
+        return "Yes";
+
+    // Try decreasing frequency of all character
+    // by one and then check all equality of all
+    // non-zero frequencies 
+    for(let c = 'a'; c <= 'z'; c++) 
+    {
+        let i = getIdx(c);
+
+        // Check character only if 
+        // it occurs in str
+        if (freq[i] > 0) 
+        {
+            freq[i]--;
+
+            if (allSame(freq, 26))
+                return "Yes";
+                
+            freq[i]++;
+        }
+    }
+    return "No";
+}
+
+// Driver code 
+let str = "xyyzz";
+
+let result = possibleSameCharFreqByOneRemoval(str);
+console.log(result);
